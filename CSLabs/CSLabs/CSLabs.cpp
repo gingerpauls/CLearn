@@ -7,8 +7,8 @@
 int main()
 {
 	const int characterArraySize = 80;
-	char firstName[characterArraySize];
-	char lastName[characterArraySize];
+	char firstLine[characterArraySize];
+	char secondLine[characterArraySize];
 
 	std::ifstream inFromTextFile;
 	std::ofstream outToTextFile;
@@ -16,20 +16,17 @@ int main()
 	inFromTextFile.open("inputfile.txt");
 	outToTextFile.open("outputfile.txt");
 
-	printf("First name: ");
-	std::cin.getline(firstName, sizeof firstName);
-	outToTextFile << firstName << std::endl;
-	//inFromTextFile >> firstName;
-	inFromTextFile.getline(firstName, sizeof firstName);
+	printf("input line 1: ");
+	std::cin.getline(firstLine, sizeof firstLine);
+	outToTextFile << "firstLine: "<< firstLine << std::endl;
+	inFromTextFile.getline(firstLine, sizeof firstLine);
 
-	printf("\nLast name: ");
-	std::cin.getline(lastName, sizeof lastName);
-	outToTextFile << lastName << std::endl;
-	//inFromTextFile >> lastName;
-	inFromTextFile.getline(lastName, sizeof lastName);
+	printf("\ninput line 2: ");
+	std::cin.getline(secondLine, sizeof secondLine);
+	outToTextFile << "secondLine: " << secondLine << std::endl;
+	inFromTextFile.getline(secondLine, sizeof secondLine);
 
-	printf("\nYour name is: %s \n\n", firstName);
-	//printf("\nYour name is: %s %s\n\n", firstName, lastName);
+	printf("\nText file: \n%s \n%s\n\n", firstLine, secondLine);
 
 	inFromTextFile.close();
 	outToTextFile.close();

@@ -1,1 +1,2 @@
-test from input file
+line 1 from inputfile.txt
+line 2 from inputfile.txt
