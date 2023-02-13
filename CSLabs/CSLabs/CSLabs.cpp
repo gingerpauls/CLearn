@@ -25,15 +25,14 @@ int main()
 
 		outToTextFile.close();
 		inFromTextFile.open("inputfile.txt");
-		//return 1;
 	}
 
 	outToTextFile.open("outputfile.txt");
 	if (!outToTextFile)
 	{
-		printf("Can't open outputfile.txt successfully. I will create it for you!\n");
-		//outToTextFile.open("outputfile.txt");
-		//return 1;
+		printf("Can't open outputfile.txt successfully.\n");
+
+		return 1;
 	}
 
 	printf("input line 1: ");
