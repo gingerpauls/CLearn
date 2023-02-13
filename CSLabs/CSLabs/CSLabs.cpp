@@ -6,7 +6,8 @@
 
 int main()
 {
-	const int characterArraySize = 80;
+	//added new fatures!
+		const int characterArraySize = 80;
 	char firstLine[characterArraySize];
 	char secondLine[characterArraySize];
 
