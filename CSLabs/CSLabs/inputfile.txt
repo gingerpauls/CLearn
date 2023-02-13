@@ -1,2 +1,2 @@
-line 1 from inputfile.txt
-line 2 from inputfile.txt
+tesdt input `1
+twest input 2
