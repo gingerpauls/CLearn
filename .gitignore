@@ -10,6 +10,10 @@
 *.userosscache
 *.sln.docstates
 
+#Large files
+*.wav
+*.reapeaks
+
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
@@ -97,6 +101,30 @@ StyleCopReport.xml
 *.pidb
 *.svclog
 *.scc
+
+# Visual Studio files and folders
+.vs/
+*.suo
+*.user
+*.log
+*.pdb
+*.obj
+*.exe
+*.dll
+*.ilk
+*.ipch
+*.aps
+*.ncb
+*.opensdf
+*.sdf
+*.bak
+*.resharper
+*.cache
+*.vshost.*
+bin/
+obj/
+[Dd]ebug/
+[Rr]elease/
 
 # Chutzpah Test files
 _Chutzpah*

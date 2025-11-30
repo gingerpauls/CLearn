@@ -46,7 +46,8 @@ typedef struct {
 typedef struct {
     char ID[CHUNK_ID_SIZE];
     unsigned int Size;
-    short *Data;
+    int *Data32bit;
+    
 } DATA;
 
 typedef struct {
@@ -61,7 +62,7 @@ typedef struct {
 
 void PrintFilePos(FILE *wav) {
     int file_pos = ftell(wav);
-    printf("file_pos: \t%i\n", file_pos);
+    printf("file_pos: \t\t%i\n", file_pos);
 }
 
 int main(void) {
@@ -72,7 +73,8 @@ int main(void) {
     //err = fopen_s(&wav, "sounds/resonant-twang.wav", "rb");
     //err = fopen_s(&wav, "sounds/sine_192k_32b_2ch.wav", "rb");
     //err = fopen_s(&wav, "sounds/vocal-hah.wav", "rb");
-    err = fopen_s(&wav, "sounds/synthetic-gib.wav", "rb");
+    //err = fopen_s(&wav, "sounds/synthetic-gib.wav", "rb");
+    //err = fopen_s(&wav, "sounds/Master-192k-2ch-32b.wav", "rb");
 
     if(err != 0) {
         perror("fopen\n");
@@ -98,9 +100,9 @@ int main(void) {
             count = fread_s(&wav1.RIFF.ID, sizeof(wav1.RIFF.ID), 1, sizeof(wav1.RIFF.ID), wav);
             count = fread_s(&wav1.RIFF.Size, sizeof(wav1.RIFF.Size), 1, sizeof(wav1.RIFF.Size), wav);
             count = fread_s(&wav1.RIFF.FormType, sizeof(wav1.RIFF.FormType), 1, sizeof(wav1.RIFF.FormType), wav);
-            printf("ID: \t%.4s\n", &wav1.RIFF.ID);
-            printf("Size: \t%u\n", wav1.RIFF.Size);
-            printf("FormType: \t%.4s\n", &wav1.RIFF.FormType);
+            printf("ID: \t\t\t%.4s\n", &wav1.RIFF.ID);
+            printf("Size: \t\t\t%u\n", wav1.RIFF.Size);
+            printf("FormType: \t\t%.4s\n", &wav1.RIFF.FormType);
             continue;
         }
 
@@ -113,12 +115,12 @@ int main(void) {
             count = fread_s(&wav1.FMT.ByteRate, sizeof(wav1.FMT.ByteRate), 1, sizeof(wav1.FMT.ByteRate), wav);
             count = fread_s(&wav1.FMT.BlockAlign, sizeof(wav1.FMT.BlockAlign), 1, sizeof(wav1.FMT.BlockAlign), wav);
             count = fread_s(&wav1.FMT.BitsPerSample, sizeof(wav1.FMT.BitsPerSample), 1, sizeof(wav1.FMT.BitsPerSample), wav);
-            printf("ID: \t\t%.4s\n", &wav1.FMT.ID);
-            printf("Size: \t%u\n", wav1.FMT.Size);
+            printf("ID: \t\t\t%.4s\n", &wav1.FMT.ID);
+            printf("Size: \t\t\t%u\n", wav1.FMT.Size);
             printf("AudioFormat: \t%u\n", wav1.FMT.AudioFormat);
             printf("NumChannels: \t%u\n", wav1.FMT.NumChannels);
             printf("SampleRate: \t%u\n", wav1.FMT.SampleRate);
-            printf("ByteRate: \t%u\n", wav1.FMT.ByteRate);
+            printf("ByteRate: \t\t%u\n", wav1.FMT.ByteRate);
             printf("BlockAlign: \t%u\n", wav1.FMT.BlockAlign);
             printf("BitsPerSample: \t%u\n", wav1.FMT.BitsPerSample);
             continue;
@@ -134,7 +136,7 @@ int main(void) {
                     count = fread_s(&INFO.Size, sizeof(INFO.Size), 1, sizeof(INFO.Size), wav);
                     INFO.String = malloc(INFO.Size);
                     count = fread_s(INFO.String, INFO.Size, 1, INFO.Size, wav);
-                    printf("%.4s \t\t%s\n", &INFO.ID, INFO.String);
+                    printf("%.4s \t\t\t%s\n", &INFO.ID, INFO.String);
                     free(INFO.String);
                     if(INFO.Size % 2) {
                         fseek(wav, 1, SEEK_CUR);
@@ -149,9 +151,9 @@ int main(void) {
             else {
                 printf("unknown list type\n");
             }
-            printf("ID: \t%.4s\n", &wav1.LIST.ID);
-            printf("Size: \t%u\n", wav1.LIST.Size);
-            printf("Type: \t%.4s\n", &wav1.LIST.Type);
+            printf("ID: \t\t\t%.4s\n", &wav1.LIST.ID);
+            printf("Size: \t\t\t%u\n", wav1.LIST.Size);
+            printf("Type: \t\t\t%.4s\n", &wav1.LIST.Type);
             continue;
         }
 
@@ -160,25 +162,25 @@ int main(void) {
             count = fread_s(&wav1.JUNK.ID, sizeof(wav1.JUNK.ID), 1, sizeof(wav1.JUNK.ID), wav);
             count = fread_s(&wav1.JUNK.Size, sizeof(wav1.JUNK.Size), 1, sizeof(wav1.JUNK.Size), wav);
             fseek(wav, wav1.JUNK.Size, SEEK_CUR);
-            printf("ID: \t%.4s\n", &wav1.JUNK.ID);
-            printf("Size: \t%u\n", wav1.JUNK.Size);
+            printf("ID: \t\t\t%.4s\n", &wav1.JUNK.ID);
+            printf("Size: \t\t\t%u\n", wav1.JUNK.Size);
             continue;
         }
 
         if(strncmp(chunk_id, "data", 4) == 0) {
             count = fread_s(&wav1.DATA.ID, sizeof(wav1.DATA.ID), 1, sizeof(wav1.DATA.ID), wav);
             count = fread_s(&wav1.DATA.Size, sizeof(wav1.DATA.Size), 1, sizeof(wav1.DATA.Size), wav);
-            printf("ID: \t%.4s\n", &wav1.DATA.ID);
-            printf("Size: \t%u\n", wav1.DATA.Size);
+            printf("ID: \t\t\t%.4s\n", &wav1.DATA.ID);
+            printf("Size: \t\t\t%u\n", wav1.DATA.Size);
             wav1.DATA.Data = malloc(wav1.DATA.Size);
             int total_count = 0;
             for(size_t i = 0; i < wav1.DATA.Size / sizeof(*wav1.DATA.Data); i++) {
                 count = fread_s(&wav1.DATA.Data[i], wav1.DATA.Size, sizeof(*wav1.DATA.Data), 1, wav);
-                printf("Data[%i]: \t%hi\n", i, wav1.DATA.Data[i]);
+                printf("Data[%i]: \t\t%i\n", i, wav1.DATA.Data[i]);
                 total_count += count;
             }
             free(wav1.DATA.Data);
-            printf("total_count: %i\n", total_count);
+            printf("total_count: \t\t%i\n", total_count);
             break;
         }
     }
